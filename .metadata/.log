@@ -1225,3 +1225,18 @@ java.lang.Exception: The project description file (.project) for 'Debug' is miss
 
 !ENTRY com.ti.ccstudio.project.ui.webcontent 1 0 2021-05-03 16:08:29.642
 !MESSAGE CCS HTTP adapter started! [ccs.port:50419] - Open 'http://localhost:50419/ide' in web browser to see listing of available APIs...
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-05-03 16:16:14.267
+!MESSAGE Indexed 'Experimento1' (1 sources, 0 headers) in 0.284 sec: 2 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0 %)
+
+!ENTRY com.ti.ccstudio.debug 1 0 2021-05-03 16:27:00.062
+!MESSAGE DS_ERROR: CORTEX_M4_0: Error: Timed out while waiting for target powerup/polling a hardware resource.
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2021-05-03 16:27:00.064
+!MESSAGE DS_ERROR: CORTEX_M4_0: Trouble Halting Target CPU: Connection with the target was unexpectedly lost.
+
+
+!ENTRY com.ti.ccstudio.debug 1 0 2021-05-03 16:27:00.079
+!MESSAGE DS_ERROR: CORTEX_M4_0: Failed to remove the debug state from the target before disconnecting.  There may still be breakpoint op-codes embedded in program memory.  It is recommended that you reset the emulator before you connect and reload your program before you continue debugging
+
