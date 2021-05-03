@@ -51,6 +51,8 @@ int main(void)
 
     // Loop forever.
 
+
+    //probando 12 probando
     while(1)
     {
 
