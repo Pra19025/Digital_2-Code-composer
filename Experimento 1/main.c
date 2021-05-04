@@ -25,8 +25,7 @@ int main(void)
     //determinar la frecuencia, porque solo se copio del ejemplo
 
     SysCtlClockSet(
-            SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ
-                    | SYSCTL_OSC_MAIN);
+    SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
 
     //configuración del reloj para habilitarlo como puerto F
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
@@ -41,7 +40,7 @@ int main(void)
     // enable the GPIO pin for digital function.
 
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE,
-                          GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
+    GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
 
     // Loop forever.
 
@@ -68,13 +67,14 @@ int main(void)
         {
             LED = 10;   //deberia ser amarillo
         }
-            if(control == 1){
-                LED = 2;
-                control = 0;
-            }
 
-            control = 1;
+        if (control == 1)
+        {
+            LED = 2;
+            control = 0;
+        }
 
+        control = 1;
 
     }
 }
