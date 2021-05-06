@@ -1,4 +1,9 @@
 //*****************************************************************************
+//
+// EXPERIMENTO 1
+// Noel Prado 19025
+//
+//*****************************************************************************
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -7,17 +12,11 @@
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 
-//*****************************************************************************
-//
-// EXPERIMENTO 1
-// Noel Prado 19025
-//
-//*****************************************************************************
+void semaforo();
 
 int main(void)
 {
-    uint8_t LED = 8;
-    uint8_t control = 0;
+
 
     volatile uint32_t ui32Loop; //variable para el delay
 
@@ -30,51 +29,78 @@ int main(void)
     //configuración del reloj para habilitarlo como puerto F
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 
-    // Check if the peripheral access is enabled.
-
     while (!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF))
     {
     }
 
-    // Enable the GPIO pin for the LED (PF2).  Set the direction as output, and
-    // enable the GPIO pin for digital function.
-
+    //se configuran los pines como salidas
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE,
     GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
+
+    //se configura el boton
+    GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_4);
+    GPIOPadConfigSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_STRENGTH_8MA,
+    GPIO_PIN_TYPE_STD_WPU);
+    int32_t boton1 = 16;
+    int32_t boton2 = 16;
 
     // Loop forever.
 
     while (1)
     {
 
-        // Turn on the LED.
-
-        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3,
-                     LED);
-
         // Delay for a bit.
 
-        for (ui32Loop = 0; ui32Loop < 2000000; ui32Loop++)
-        {
+        boton1 = boton2;
+        boton2 = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_4);
 
+        if (boton1 == 0 && boton2 == 16)
+        {
+              semaforo();
         }
 
-        //Cuando LED vale 2, es rojo
-        //Cuando LED vale 4, es azul
-        //Cuando LED, vale 8, es verde
+    }
+}
 
-        if (LED == 8)
-        {
-            LED = 10;   //deberia ser amarillo
-        }
+void semaforo()
+{
 
-        if (control == 1)
-        {
-            LED = 2;
-            control = 0;
-        }
+    //Cuando LED vale 2, es rojo
+    //Cuando LED vale 4, es azul
+    //Cuando LED, vale 8, es verde
+    //ya no se usa led, pero aplica lo mismo para el último parámetro de la función
 
-        control = 1;
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3, 8);
 
+    // esta es la función para usar delay, el parámetro es el número de ciclos que se quiere que se ejecute
+    SysCtlDelay(7900000);
+    int i = 0;
+    for (i = 0; i < 3; i++)
+    {
+        //se usa el for para el efecto de oscilar
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3, 0);
+        SysCtlDelay(1900000);
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3, 8);
+        SysCtlDelay(1900000);
+
+    }
+
+
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3, 10);    //verde y rojo
+    SysCtlDelay(7900000);
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3, 2);    //rojo
+    SysCtlDelay(7900000);
+
+
+}
+//este es el delay que se uso antes, el hecho a mano
+//se sustituyo por la función
+
+void delay()
+{
+    uint32_t ui32Loop = 0;
+    for (ui32Loop = 0; ui32Loop < 2000000; ui32Loop++)
+    {
+        //delay
     }
 }
