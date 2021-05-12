@@ -79,6 +79,11 @@ int main(void)
     {
         if (entrada == 'r')
         {
+
+            //al negar rojo, cuando este vale 0, se obtienen 8 bits 1111 1111
+            // al hacer el and con el pin del led rojo, se obtiene una como máscara, que solo va a estar en uno en ese pin.
+            // por tanto esto hace que el toggle afecte a ese pin en este caso.
+            // lo mismo aplica para los otros leds.
             rojo = ~rojo & GPIO_PIN_1;
             entrada = 0;
         }
