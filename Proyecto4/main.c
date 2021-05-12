@@ -42,8 +42,8 @@ int main(void)
     //GPIOPinWrite(GPIO_PORTA_BASE, 0b1100, 0b1100);
 
 
-    int32_t boton1 = 16;
-    int32_t boton2 = 16;
+    uint8_t boton1 = 0;
+
 
 
     //Loop forever
@@ -51,14 +51,20 @@ int main(void)
 
         SysCtlDelay(1000);
         //escritura de prueba
-        GPIOPinWrite(GPIO_PORTA_BASE, 0b0100, 0b1111);
-        boton1 = boton2;
-        boton2 = GPIOPinRead(GPIO_PORTE_BASE, 0b1111);
 
-        if(boton1 == 0 && boton2 == 16){
+
+
+        boton1 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_2);
+
+        if(boton1 == 0){
             //escritura de prueba
-                  GPIOPinWrite(GPIO_PORTA_BASE, 0b0000, 0b1111);
-            GPIOPinWrite(GPIO_PORTA_BASE, 0b1111, 0b1111);
+
+            GPIOPinWrite(GPIO_PORTA_BASE, 0b1000, 0b1111);
+            GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_2, 0b0000);
+
+        }else{
+            GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3, 0b000);
+            GPIOPinWrite(GPIO_PORTA_BASE,GPIO_PIN_2, 0b1111);
         }
 
 
