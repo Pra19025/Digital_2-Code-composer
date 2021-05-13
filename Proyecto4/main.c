@@ -23,50 +23,86 @@ int main(void)
 
     //se configuran los pines como salidas (para los leds)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-    GPIOPinTypeGPIOOutput(
-            GPIO_PORTA_BASE,
-            GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4
-                    | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
+    GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, 255);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE,255);
 
     //se configuran los pines como entradas (para los push buttons)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
-    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE,
-                         255);
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, 255);
 
     //se configuran las pull up
-    GPIOPadConfigSet(GPIO_PORTE_BASE,
-                     255,
-                     GPIO_STRENGTH_8MA,
+    GPIOPadConfigSet(GPIO_PORTE_BASE, 255,
+    GPIO_STRENGTH_8MA,
                      GPIO_PIN_TYPE_STD_WPU);
 
-    //GPIOPinWrite(GPIO_PORTA_BASE, 0b1100, 0b1100);
+    //GPIOPinWrite(GPIO_PORTB_BASE, 255, 255);
 
-
-    uint8_t boton1 = 0;
-
-
+    uint32_t parqueo1 = 0;
+    uint32_t parqueo2 = 0;
+    uint32_t parqueo3 = 0;
+    uint32_t parqueo4 = 0;
 
     //Loop forever
-    while(1){
-
-        SysCtlDelay(1000);
-        //escritura de prueba
+    while (1)
+    {
 
 
+        parqueo1 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_2);
 
-        boton1 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_2);
+        parqueo2 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_3);
 
-        if(boton1 == 0){
-            //escritura de prueba
+        parqueo3 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_1);
+
+        parqueo4 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_5);
+
+        if (parqueo1 == 0)
+        {
+
 
             GPIOPinWrite(GPIO_PORTA_BASE, 0b1000, 0b1111);
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_2, 0b0000);
 
-        }else{
+        }
+        else
+        {
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3, 0b000);
-            GPIOPinWrite(GPIO_PORTA_BASE,GPIO_PIN_2, 0b1111);
+            GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_2, 0b1111);
         }
 
+        if(parqueo2 == 0){
+
+
+                   GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, 0);
+                   GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_6, 255);
+
+               }else{
+                   GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, 255);
+                   GPIOPinWrite(GPIO_PORTB_BASE,GPIO_PIN_6, 0);
+               }
+
+
+        if(parqueo3 == 0){
+
+
+                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_7, 0);
+                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 255);
+
+                 }else{
+                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_7, 255);
+                     GPIOPinWrite(GPIO_PORTB_BASE,GPIO_PIN_3, 0);
+                 }
+
+        if(parqueo4 == 0){
+
+
+                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, 255);
+
+                 }else{
+                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 255);
+                     GPIOPinWrite(GPIO_PORTB_BASE,GPIO_PIN_0, 0);
+                 }
 
     }
 
