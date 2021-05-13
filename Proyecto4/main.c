@@ -22,7 +22,7 @@
 
 uint32_t loadval;
 
-uint32_t parqueoTotal = 3;
+uint32_t parqueoTotal = 0;
 
 uint32_t tabla7(uint32_t entrada)
 {
@@ -80,7 +80,7 @@ int main(void)
                      GPIO_PIN_TYPE_STD_WPU);
 
     //configuración del timer0 a 32 bits, periódico
-    loadval = SysCtlClockGet() /100; //para que cuente poco tiempo
+    loadval = SysCtlClockGet() /1000; //para que cuente poco tiempo
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
@@ -98,6 +98,7 @@ int main(void)
     uint32_t parqueo2 = 0;
     uint32_t parqueo3 = 0;
     uint32_t parqueo4 = 0;
+    uint32_t parqueoTemporal = 0;
 
     //Loop forever
     while (1)
@@ -111,19 +112,21 @@ int main(void)
 
         parqueo4 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_5);
 
+        parqueoTotal = parqueoTemporal;
+
         if (parqueo1 == 0)
         {
 
             GPIOPinWrite(GPIO_PORTA_BASE, 0b1000, 0b1111);
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_2, 0b0000);
-            //parqueoTotal--;
+            parqueoTemporal--;
 
         }
         else
         {
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3, 0b000);
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_2, 0b1111);
-            //parqueoTotal++;
+            parqueoTemporal++;
         }
 
         if (parqueo2 == 0)
@@ -167,7 +170,7 @@ int main(void)
 
     }
 
-    return 0;
+
 }
 
 void sevenseg(void)
