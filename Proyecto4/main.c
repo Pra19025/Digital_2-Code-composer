@@ -14,6 +14,12 @@
 #include "driverlib/timer.h"
 #include "driverlib/uart.h"
 
+uint32_t loadval;
+
+uint8_t parqueoTotal = 4;
+
+void sevenseg(void);
+
 int main(void)
 {
     //configuración del reloj
@@ -25,7 +31,7 @@ int main(void)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, 255);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
-    GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE,255);
+    GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, 255);
 
     //se configuran los pines como entradas (para los push buttons)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
@@ -36,7 +42,24 @@ int main(void)
     GPIO_STRENGTH_8MA,
                      GPIO_PIN_TYPE_STD_WPU);
 
-    //GPIOPinWrite(GPIO_PORTB_BASE, 255, 255);
+    //configuración del timer0 a 32 bits, periódico
+    loadval = SysCtlClockGet() / 100; //para que cuente poco tiempo
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+    TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+    TimerLoadSet(TIMER0_BASE, TIMER_A, loadval - 1);
+
+    //habilitando la interrupción del timer0
+    IntEnable(INT_TIMER0A);
+    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+
+    TimerEnable(TIMER0_BASE, TIMER_A);
+
+    IntRegister(INT_TIMER0A, sevenseg);
+
+    //el 7 segmetnos esta conectado al puerto F (0 a 4) y a los pines del puerto D PD2 y PD3
+
+
 
     uint32_t parqueo1 = 0;
     uint32_t parqueo2 = 0;
@@ -46,7 +69,6 @@ int main(void)
     //Loop forever
     while (1)
     {
-
 
         parqueo1 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_2);
 
@@ -59,52 +81,86 @@ int main(void)
         if (parqueo1 == 0)
         {
 
-
             GPIOPinWrite(GPIO_PORTA_BASE, 0b1000, 0b1111);
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_2, 0b0000);
+            parqueoTotal--;
 
         }
         else
         {
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3, 0b000);
             GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_2, 0b1111);
+            parqueoTotal++;
         }
 
-        if(parqueo2 == 0){
+        if (parqueo2 == 0)
+        {
 
+            GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, 0);
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_6, 255);
 
-                   GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, 0);
-                   GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_6, 255);
+        }
+        else
+        {
+            GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, 255);
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_6, 0);
+        }
 
-               }else{
-                   GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, 255);
-                   GPIOPinWrite(GPIO_PORTB_BASE,GPIO_PIN_6, 0);
-               }
+        if (parqueo3 == 0)
+        {
 
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_7, 0);
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 255);
 
-        if(parqueo3 == 0){
+        }
+        else
+        {
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_7, 255);
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 0);
+        }
 
+        if (parqueo4 == 0)
+        {
 
-                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_7, 0);
-                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 255);
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, 255);
 
-                 }else{
-                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_7, 255);
-                     GPIOPinWrite(GPIO_PORTB_BASE,GPIO_PIN_3, 0);
-                 }
-
-        if(parqueo4 == 0){
-
-
-                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, 255);
-
-                 }else{
-                     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 255);
-                     GPIOPinWrite(GPIO_PORTB_BASE,GPIO_PIN_0, 0);
-                 }
+        }
+        else
+        {
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 255);
+            GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, 0);
+        }
 
     }
 
     return 0;
 }
+
+void sevenseg(void)
+{
+    TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+
+//    uint8_t NibbleL = (parqueoTotal & 0b00001111);
+//
+//    uint8_t aux = parqueoTotal;
+//    aux = (aux >> 4);
+//    uint8_t NibbleH = (aux & 0b00001111);
+
+    tabla7(parqueoTotal);
+
+
+
+}
+
+uint8_t tabla7(uint8_t entrada)
+{
+//esta tabla permite obtener el valor que se requiere para mostrar un numero especifcio en el ADC
+    static uint8_t tabla[] = { 0b01110111, 0b01000001, 0b00111011, 0b01101011,
+                               0b01001101, 0b01101110, 0b01111110, 0b01000011,
+                               0b01111111, 0b01101111, 0b01011111, 0b01111100,
+                               0b00110110, 0b01111001, 0b00111110, 0b00011110 };
+
+    return tabla[entrada];
+}
+
