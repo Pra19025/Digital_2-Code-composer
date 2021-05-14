@@ -37,7 +37,7 @@ uint8_t tabla7(uint8_t entrada)
 void sevenseg(uint8_t parqueo);
 
 int main(void)
-{
+    {
 
     //configuración del reloj
     // a 40Mhz
@@ -67,20 +67,24 @@ int main(void)
     GPIO_STRENGTH_8MA,
                      GPIO_PIN_TYPE_STD_WPU);
 
-    //configuración del timer0 a 32 bits, periódico
-    loadval = SysCtlClockGet() / 1000; //para que cuente poco tiempo
+    //configuración UART
 
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-    TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
-    TimerLoadSet(TIMER0_BASE, TIMER_A, loadval - 1);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
 
-    //habilitando la interrupción del timer0
-//    IntEnable(INT_TIMER0A);
-//    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+        GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
-//    TimerEnable(TIMER0_BASE, TIMER_A);
-//
-//    IntRegister(INT_TIMER0A, sevenseg);
+        UARTConfigSetExpClk(UART0_BASE, SysCtlClockGet(), 115200,
+        UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+        UART_CONFIG_PAR_NONE);
+
+        UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
+
+        UARTEnable(UART0_BASE);
+
+
+
+
 
     uint32_t parqueo1 = 0;
     uint8_t park1 = 0;
@@ -108,6 +112,9 @@ int main(void)
         parqueo4 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_5);
 
         parqueoTotal = park1 + park2 + park3 + park4;
+
+        UARTCharPut(UART0_BASE, park1);
+
 
         sevenseg(parqueoTotal);
 
@@ -228,4 +235,6 @@ void sevenseg(uint8_t parqueo)
     GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2 | GPIO_PIN_3, var3);
 
 }
+
+
 
