@@ -24,6 +24,10 @@ void setup() {
   Serial.println("Try Connecting to ");
   Serial.println(ssid);
 
+//comunicación serial con la tiva
+  Serial2.begin(115200);
+  
+  
   pinMode(LED1pin, OUTPUT);
 
   // Connect to your wi-fi modem
@@ -54,7 +58,9 @@ void setup() {
 
 void loop() {
     server.handleClient(); //para que el servidor este funcionando
-    
+
+    int lectura = Serial2.read();
+    Serial.print(lectura);
 
 }
 

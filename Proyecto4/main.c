@@ -55,8 +55,9 @@ int main(void)
     HWREG(GPIO_PORTF_BASE+GPIO_O_CR) |= GPIO_PIN_0;
 
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, 255);
+
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
-    GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, 255);
+    GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_2| GPIO_PIN_3);
 
     //se configuran los pines como entradas (para los push buttons)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
@@ -69,18 +70,22 @@ int main(void)
 
     //configuración UART
 
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
 
-    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART2);
 
-    UARTConfigSetExpClk(UART0_BASE, SysCtlClockGet(), 115200,
+    GPIOPinTypeUART(GPIO_PORTD_BASE, GPIO_PIN_6 | GPIO_PIN_7);
+    GPIOPinConfigure(GPIO_PD6_U2RX);
+    GPIOPinConfigure(GPIO_PD7_U2TX);
+
+
+
+    UARTConfigSetExpClk(UART2_BASE, SysCtlClockGet(), 115200,
     UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
     UART_CONFIG_PAR_NONE);
 
-    UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
+    UARTFIFOLevelSet(UART2_BASE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
 
-    UARTEnable(UART0_BASE);
+    UARTEnable(UART2_BASE);
 
     char park1 = 0;
     char park2 = 0;
@@ -109,14 +114,15 @@ int main(void)
 
         parqueoTotal = park1 + park2 + park3 + park4;
 
+        //se suma 48 por lo de ascii
         char parqueoEnviar[] = { park1+48, park2+48, park3+48, park4+48, '\n' };
 
         uint8_t i;
         for(i = 0; i < 255 && parqueoEnviar[i] != '\n' ; i++){
-            UARTCharPut(UART0_BASE, parqueoEnviar[i]);
+            UARTCharPut(UART2_BASE, parqueoEnviar[i]);
 
         }
-        UARTCharPut(UART0_BASE, '\n');
+        UARTCharPut(UART2_BASE, '\n');
 
 
         sevenseg(parqueoTotal);
