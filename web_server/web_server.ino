@@ -59,7 +59,7 @@ void setup() {
 void loop() {
     server.handleClient(); //para que el servidor este funcionando
 
-    int lectura = Serial2.read();
+    int   lectura = Serial2.read();
     Serial.print(lectura);
 
 }

@@ -8,12 +8,16 @@
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
 #include "inc/hw_gpio.h"
+#include "driverlib/pin_map.h"
 //#include "inc/hw_ints.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/gpio.h"
 #include "driverlib/timer.h"
 #include "driverlib/uart.h"
+
+#define GPIO_PD6_U2RX 0x00031801
+#define GPIO_PD7_U2TX 0x00031C01
 
 uint32_t loadval;
 
@@ -57,7 +61,12 @@ int main(void)
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, 255);
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
+    //aqui se desbloquea el pin PD7
+    HWREG(GPIO_PORTD_BASE+GPIO_O_LOCK) = GPIO_LOCK_KEY;
+    HWREG(GPIO_PORTD_BASE+GPIO_O_CR) |= GPIO_PIN_7;
+
     GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_2| GPIO_PIN_3);
+
 
     //se configuran los pines como entradas (para los push buttons)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
@@ -76,7 +85,6 @@ int main(void)
     GPIOPinTypeUART(GPIO_PORTD_BASE, GPIO_PIN_6 | GPIO_PIN_7);
     GPIOPinConfigure(GPIO_PD6_U2RX);
     GPIOPinConfigure(GPIO_PD7_U2TX);
-
 
 
     UARTConfigSetExpClk(UART2_BASE, SysCtlClockGet(), 115200,
@@ -120,6 +128,8 @@ int main(void)
         uint8_t i;
         for(i = 0; i < 255 && parqueoEnviar[i] != '\n' ; i++){
             UARTCharPut(UART2_BASE, parqueoEnviar[i]);
+            UARTCharPut(UART2_BASE, ',');
+
 
         }
         UARTCharPut(UART2_BASE, '\n');
