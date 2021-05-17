@@ -37,7 +37,7 @@ uint8_t tabla7(uint8_t entrada)
 void sevenseg(uint8_t parqueo);
 
 int main(void)
-    {
+{
 
     //configuración del reloj
     // a 40Mhz
@@ -69,29 +69,25 @@ int main(void)
 
     //configuración UART
 
-        SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
-        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
 
-        GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
-        UARTConfigSetExpClk(UART0_BASE, SysCtlClockGet(), 115200,
-        UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
-        UART_CONFIG_PAR_NONE);
+    UARTConfigSetExpClk(UART0_BASE, SysCtlClockGet(), 115200,
+    UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+    UART_CONFIG_PAR_NONE);
 
-        UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
+    UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
 
-        UARTEnable(UART0_BASE);
+    UARTEnable(UART0_BASE);
 
-
-
-
+    char park1 = 0;
+    char park2 = 0;
+    char park3 = 0;
+    char park4 = 0;
 
     uint32_t parqueo1 = 0;
-    uint8_t park1 = 0;
-    uint8_t park2 = 0;
-    uint8_t park3 = 0;
-    uint8_t park4 = 0;
-
     uint32_t parqueo2 = 0;
     uint32_t parqueo3 = 0;
     uint32_t parqueo4 = 0;
@@ -113,7 +109,14 @@ int main(void)
 
         parqueoTotal = park1 + park2 + park3 + park4;
 
-        UARTCharPut(UART0_BASE, park1);
+        char parqueoEnviar[] = { park1+48, park2+48, park3+48, park4+48, '\n' };
+
+        uint8_t i;
+        for(i = 0; i < 255 && parqueoEnviar[i] != '\n' ; i++){
+            UARTCharPut(UART0_BASE, parqueoEnviar[i]);
+
+        }
+        UARTCharPut(UART0_BASE, '\n');
 
 
         sevenseg(parqueoTotal);
@@ -174,10 +177,10 @@ int main(void)
             GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 255);
 
             if (park3 == 1)
-                {
-                    park3 = 0;
+            {
+                park3 = 0;
 
-                }
+            }
 
         }
         else
@@ -186,10 +189,10 @@ int main(void)
             GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_3, 0);
 
             if (park3 == 0)
-                    {
+            {
 
-                        park3 = 1;
-                    }
+                park3 = 1;
+            }
         }
 
         if (parqueo4 == 0)
@@ -199,10 +202,10 @@ int main(void)
             GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, 255);
 
             if (park4 == 1)
-                 {
-                     park4 = 0;
+            {
+                park4 = 0;
 
-                 }
+            }
 
         }
         else
@@ -211,10 +214,10 @@ int main(void)
             GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, 0);
 
             if (park4 == 0)
-                      {
+            {
 
-                          park4 = 1;
-                      }
+                park4 = 1;
+            }
         }
 
     }
@@ -235,6 +238,4 @@ void sevenseg(uint8_t parqueo)
     GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2 | GPIO_PIN_3, var3);
 
 }
-
-
 
