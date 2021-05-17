@@ -149,14 +149,14 @@ void handle_led1off() {
 String SendHTML(uint8_t led1stat) {
   String ptr = "<!DOCTYPE html> <html>\n"
                "<head><meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0, user-scalable=no\\\"\n"
-               "<title>LED Control</title>\n"
+               "<h1> Noel Prado </h1>\n"
                "<script>\n"
                "<!--\n"
                "function timedRefresh(timeoutPeriod) {\n"
                "\tsetTimeout(\"location.reload(true);\",timeoutPeriod);\n"
                "}\n"
                "\n"
-               "window.onload = timedRefresh(500);\n"
+               "window.onload = timedRefresh(1000);\n"
                "\n"
                "//   -->\n"
                "</script>"
@@ -228,7 +228,7 @@ String SendHTML(uint8_t led1stat) {
                "</tbody>\n"
                "</table>\n"
                "<body>\n"
-               "<h1>ESP32 Web Server &#128664</h1>\n"
+               "<h1> &#128664 Servidor Parqueomatic &#128664  </h1>\n"
                "";
 
   ptr += "</body>\n";
