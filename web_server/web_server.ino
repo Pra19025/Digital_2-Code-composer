@@ -29,7 +29,7 @@ bool LED1status = LOW;
 
 //configuración
 void setup() {
-
+  //comunicacion serial para ver la ip y datos que pueda mandar el esp32 a traves del cable 
   Serial.begin(115200);
   Serial.println("Try Connecting to ");
   Serial.println(ssid);
@@ -71,16 +71,18 @@ void loop() {
 
   while (Serial2.available()) {
 
+//se leen los datos que envia la tiva
     char lectura = Serial2.read();
     if (lectura != '\n') {
       datos.concat(lectura);
     } else {
-
+//se separan los datos de la tiva para mostrarlos individualmente en el web server
       p1 = getValue(datos, ',', 0);
       p2 = getValue(datos, ',', 1);
       p3 = getValue(datos, ',', 2);
       p4 = getValue(datos, ',', 3);
 
+   //comparaciones para mostar un texto específico
       if (p1.toInt() == 1) {
         p1disp = "Disponible";
       } else {
@@ -127,22 +129,7 @@ void handle_OnConnect() {
   Serial.println("GPIO2 Status: OFF");
   server.send(200, "text/html", SendHTML(LED1status));
 }
-//************************************************************************************************
-// Handler de led1on
-//************************************************************************************************
-void handle_led1on() {
-  LED1status = HIGH;
-  Serial.println("GPIO2 Status: ON");
-  server.send(200, "text/html", SendHTML(LED1status));
-}
-//************************************************************************************************
-// Handler de led1off
-//************************************************************************************************
-void handle_led1off() {
-  LED1status = LOW;
-  Serial.println("GPIO2 Status: OFF");
-  server.send(200, "text/html", SendHTML(LED1status));
-}
+
 //************************************************************************************************
 // Procesador de HTML
 //************************************************************************************************

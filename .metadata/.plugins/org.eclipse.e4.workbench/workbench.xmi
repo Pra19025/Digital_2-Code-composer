@@ -260,7 +260,7 @@
                 </children>
               </children>
               <children xsi:type="basic:PartSashContainer" xmi:id="_jg6CdrP_EeuwctAL5MjyMw" containerData="7500" selectedElement="_jg6Cd7P_EeuwctAL5MjyMw">
-                <children xsi:type="basic:PartSashContainer" xmi:id="_jg6Cd7P_EeuwctAL5MjyMw" containerData="5801" selectedElement="_jg6CeLP_EeuwctAL5MjyMw" horizontal="true">
+                <children xsi:type="basic:PartSashContainer" xmi:id="_jg6Cd7P_EeuwctAL5MjyMw" containerData="8291" selectedElement="_jg6CeLP_EeuwctAL5MjyMw" horizontal="true">
                   <children xsi:type="advanced:Placeholder" xmi:id="_jg6CeLP_EeuwctAL5MjyMw" elementId="org.eclipse.ui.editorss" containerData="7000" ref="_jg6EiLP_EeuwctAL5MjyMw"/>
                   <children xsi:type="basic:PartStack" xmi:id="_jg6CebP_EeuwctAL5MjyMw" elementId="right" toBeRendered="false" containerData="3000">
                     <children xsi:type="advanced:Placeholder" xmi:id="_jg6CerP_EeuwctAL5MjyMw" elementId="org.eclipse.ui.views.ContentOutline" toBeRendered="false" ref="_jg6FELP_EeuwctAL5MjyMw" closeable="true">
@@ -285,7 +285,7 @@
                     </children>
                   </children>
                 </children>
-                <children xsi:type="basic:PartSashContainer" xmi:id="_jg6Cf7P_EeuwctAL5MjyMw" containerData="4199" selectedElement="_jg6Cg7P_EeuwctAL5MjyMw" horizontal="true">
+                <children xsi:type="basic:PartSashContainer" xmi:id="_jg6Cf7P_EeuwctAL5MjyMw" containerData="1709" selectedElement="_jg6Cg7P_EeuwctAL5MjyMw" horizontal="true">
                   <children xsi:type="basic:PartStack" xmi:id="_jg6Cg7P_EeuwctAL5MjyMw" elementId="bottomLeft" containerData="5000" selectedElement="_jg6ChLP_EeuwctAL5MjyMw">
                     <children xsi:type="advanced:Placeholder" xmi:id="_jg6ChLP_EeuwctAL5MjyMw" elementId="org.eclipse.ui.console.ConsoleView" ref="_jg6E1rP_EeuwctAL5MjyMw" closeable="true">
                       <tags>View</tags>
@@ -390,7 +390,7 @@
           <tags>categoryTag:General</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_jg6EjLP_EeuwctAL5MjyMw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="main.c" iconURI="platform:/plugin/org.eclipse.cdt.ui/icons/obj16/c_file_obj.gif" tooltip="" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.cdt.ui.editor.CEditor&quot; name=&quot;main.c&quot; partName=&quot;main.c&quot; title=&quot;main.c&quot; tooltip=&quot;Proyecto4/main.c&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Proyecto4/main.c&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;1158&quot; selectionTopPixel=&quot;1577&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.cdt.ui.editor.CEditor&quot; name=&quot;main.c&quot; partName=&quot;main.c&quot; title=&quot;main.c&quot; tooltip=&quot;Proyecto4/main.c&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Proyecto4/main.c&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;3280&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>active</tags>
@@ -628,7 +628,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_jg6FJLP_EeuwctAL5MjyMw" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_STakALdLEeuUAadOCYv_1A" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_jg76aLP_EeuwctAL5MjyMw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_kNp3ML76Eeubr6P_g5d08A" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_jg76aLP_EeuwctAL5MjyMw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_jg6FNLP_EeuwctAL5MjyMw" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -668,7 +668,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_jg6psrP_EeuwctAL5MjyMw" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_STdnU7dLEeuUAadOCYv_1A" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_jg754LP_EeuwctAL5MjyMw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_kNuvsL76Eeubr6P_g5d08A" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_jg754LP_EeuwctAL5MjyMw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_jg6pvbP_EeuwctAL5MjyMw" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>

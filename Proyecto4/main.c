@@ -23,6 +23,7 @@ uint32_t loadval;
 
 uint8_t parqueoTotal = 0;
 
+//esta función regresa información acerca de que valores deben encenderse de un puerto para conformar los números del 7 segmentos
 uint8_t tabla7(uint8_t entrada)
 {
     //el 7 segmetnos esta conectado al puerto F (0 a 4) y a los pines del puerto D PD2 y PD3
@@ -55,6 +56,7 @@ int main(void)
     GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, 255);
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    //se desbloquea un pin
     HWREG(GPIO_PORTF_BASE+GPIO_O_LOCK) = GPIO_LOCK_KEY;
     HWREG(GPIO_PORTF_BASE+GPIO_O_CR) |= GPIO_PIN_0;
 
@@ -112,6 +114,7 @@ int main(void)
     {
         SysCtlDelay(10000);
 
+        //se leen los pine, se guarda la lectura en una variable
         parqueo1 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_2);
 
         parqueo2 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_3);
@@ -120,12 +123,15 @@ int main(void)
 
         parqueo4 = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_5);
 
+        //se suma el total de parqueos para mostrarlo en el 7 segmentos
         parqueoTotal = park1 + park2 + park3 + park4;
 
         //se suma 48 por lo de ascii
+        //este arreglo es el que se envia al esp32
         char parqueoEnviar[] = { park1+48, park2+48, park3+48, park4+48, '\n' };
 
         uint8_t i;
+        //forma de enviar un string a traves de la tiva. consiste en enviar chars continuamente
         for(i = 0; i < 255 && parqueoEnviar[i] != '\n' ; i++){
             UARTCharPut(UART2_BASE, parqueoEnviar[i]);
             UARTCharPut(UART2_BASE, ',');
@@ -137,6 +143,8 @@ int main(void)
 
         sevenseg(parqueoTotal);
 
+        //segun el valor de las variables leídas de los sensores se prende un led, y se le asigna un valor a otra variable
+        //la otra variable es para enviar los datos al web server
         if (parqueo1 == 0)
         {
 
